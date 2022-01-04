@@ -14,6 +14,7 @@ function MyComponent() {
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [UserList, setUserList] = useState([]);
+  const [validateUser, setValidation] = useState(false);
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -36,8 +37,18 @@ function MyComponent() {
       mobile: mobile,
     };
 
+    if (Username == "" || password == "" || email == "" || mobile == "") {
+      setValidation(true);
+      return;
+    }
+
     const newUserList = [UserObj, ...UserList];
     setUserList(newUserList);
+    setValidation(false);
+    setUsername("");
+    setPassword("");
+    setEmail("");
+    setMobile("");
   };
   return (
     <div>
@@ -47,24 +58,32 @@ function MyComponent() {
           placeholder="Enter User name"
           value={Username}
           onChange={handleUsername}
+          className={
+            Username == "" && validateUser ? "border border-danger" : ""
+          }
         ></input>
         <input
           type="text"
           placeholder="Enter password"
           value={password}
           onChange={handlePassword}
+          className={
+            password == "" && validateUser ? "border border-danger" : ""
+          }
         ></input>
         <input
           type="text"
           placeholder="Enter email"
           value={email}
           onChange={handleEmail}
+          className={email == "" && validateUser ? "border border-danger" : ""}
         ></input>
         <input
           type="text"
           placeholder="Enter mobile"
           value={mobile}
           onChange={handleMobile}
+          className={mobile == "" && validateUser ? "border border-danger" : ""}
         ></input>
         <input type="button" value="Register" onClick={register}></input>
         <div>
