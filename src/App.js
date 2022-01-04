@@ -9,18 +9,20 @@ export default function App() {
 }
 
 function MyComponent() {
-  const [msg, setMsg] = useState("");
+  const [list, setList] = useState(["Hello"]);
 
-  const changeMessage = (e) => setMsg(e.target.value);
+  const tweet = () => {
+    let newList = [...list, "Hello Nikita"];
+    setList(newList);
+  };
   return (
     <div>
-      <div>
-        <input type="text" onChange={changeMessage}></input>
+      <input type="button" value="Tweet" onClick={tweet}></input>
+      <div id="parent">
+        {list.map((item) => (
+          <div>{item}</div>
+        ))}
       </div>
-      <div>{msg}</div>
-      <div>{msg}</div>
-      <div>{msg}</div>
-      <div>{msg}</div>
     </div>
   );
 }
