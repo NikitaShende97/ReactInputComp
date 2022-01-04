@@ -3,48 +3,77 @@ import { useState } from "react";
 export default function App() {
   return (
     <div>
-      <Mycomponenet />
+      <MyComponent />
     </div>
   );
 }
-function Mycomponenet() {
-  const [list, setList] = useState(["Hello"]);
-  const [Msg, setMsg] = useState("");
 
-  const tweet = (e) => {
-    const newList = [Msg, ...list];
-    setList(newList);
-    setMsg("");
+function MyComponent() {
+  const [Username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [UserList, setUserList] = useState([]);
+
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
   };
-  const changeMsg = (e) => {
-    const newMsg = e.target.value;
-    setMsg(newMsg);
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
   };
-  const deleteTop = () => {
-    list.splice(0, 1);
-    setList([...list]);
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
   };
-  const deleteIndex = (index1) => {
-    list.splice(index1, 1);
-    setList([...list]);
+  const handleMobile = (e) => {
+    setMobile(e.target.value);
+  };
+
+  const register = () => {
+    const UserObj = {
+      username: Username,
+      password: password,
+      email: email,
+      mobile: mobile,
+    };
+
+    const newUserList = [UserObj, ...UserList];
+    setUserList(newUserList);
   };
   return (
     <div>
-      <input type="text" onChange={changeMsg}></input>
-      <input type="button" onClick={tweet} value="Tweet"></input>
-      <input type="button" onClick={deleteTop} value="DeleteTop"></input>
       <div>
-        {list.map((item, index1) => (
-          <div>
-            {item}
-
-            <input
-              type="button"
-              onClick={() => deleteIndex(index1)}
-              value="Delete"
-            ></input>
-          </div>
-        ))}
+        <input
+          type="text"
+          placeholder="Enter User name"
+          value={Username}
+          onChange={handleUsername}
+        ></input>
+        <input
+          type="text"
+          placeholder="Enter password"
+          value={password}
+          onChange={handlePassword}
+        ></input>
+        <input
+          type="text"
+          placeholder="Enter email"
+          value={email}
+          onChange={handleEmail}
+        ></input>
+        <input
+          type="text"
+          placeholder="Enter mobile"
+          value={mobile}
+          onChange={handleMobile}
+        ></input>
+        <input type="button" value="Register" onClick={register}></input>
+        <div>
+          {UserList.map((item, index) => (
+            <div>
+              {item.username},{item.password},{item.email},{item.mobile}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
