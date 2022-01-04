@@ -3,22 +3,28 @@ import { useState } from "react";
 export default function App() {
   return (
     <div>
-      <MyComponent />
+      <Mycomponent />
     </div>
   );
 }
 
-function MyComponent() {
-  const [list, setList] = useState(["Hello"]);
-
-  const tweet = () => {
-    let newList = [...list, "Hello Nikita"];
+function Mycomponent() {
+  const [list, setList] = useState([""]);
+  const [msg, setMsg] = useState("");
+  const addtweet = (e) => {
+    const newList = [...list, msg];
     setList(newList);
+    setMsg("");
+  };
+
+  const changeMsg = (e) => {
+    setMsg(e.target.value);
   };
   return (
     <div>
-      <input type="button" value="Tweet" onClick={tweet}></input>
-      <div id="parent">
+      <input type="text" id="input" onChange={changeMsg}></input>
+      <input type="button" value="tweet" onClick={addtweet}></input>
+      <div>
         {list.map((item) => (
           <div>{item}</div>
         ))}
