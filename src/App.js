@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function App() {
   return (
@@ -9,56 +10,56 @@ export default function App() {
 }
 
 function Mycomponent() {
-  const [movie, setMovie] = useState("");
-  const [year, setYear] = useState("");
-  const [list, setList] = useState(["Movie"]);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [list, setList] = useState([]);
 
-  const handleMoviename = (e) => {
-    setMovie(e.target.value);
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
   };
-  const handleYear = (e) => {
-    setYear(e.target.value);
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
   };
-  const addDetails = () => {
-    const userObj = {
-      Movie: movie,
-      Year: year,
-    };
-    const newList = [...list, userObj];
+  const registerUser = async () => {
+    const data = { Username: username, Password: password };
+
+    const url = "http://localhost:8000/add-users";
+    await axios.post(url, data);
+
+    const newList = [data, ...list];
+    setList(newList);
+    setUsername("");
+    setPassword("");
+  };
+
+  const getUsers = async () => {
+    const url = "http://localhost:8000/users";
+    const result = await axios.get(url);
+    const list = result.data;
+    const newList = [...list];
+    setList(newList);
+  };
+  const userInfo = async () => {
+    const url = "http://localhost:8000/users";
+    const res = await fetch(url);
+    const listU = await res.json();
+    const newList = [...listU];
+    console.log(newList);
     setList(newList);
   };
 
-  const deleteMovie = (index) => {
-    list.splice(index, 1);
-    setList([...list]);
-  };
+  useEffect(() => userInfo(), []);
   return (
     <div>
-      <div>
-        <input type="text" onChange={handleMoviename}></input>
-        <input type="text" onChange={handleYear}></input>
-        <input
-          type="button"
-          onClick={addDetails}
-          value="Add"
-          className="btn btn-outline-primary btn-sm"
-        ></input>
-      </div>
+      <h1>User Registration</h1>
+      <input type="text" value={username} onChange={handleUsername}></input>
+      <input type="text" value={password} onChange={handlePassword}></input>
+      <input type="button" value="Register" onClick={registerUser}></input>
+      <input type="button" value="Get" onClick={userInfo}></input>
       <div>
         {list.map((item, index) => (
           <div key={index}>
-            <div className="row bg-secondary mt-1 text-white">
-              <div className="col-1">{item.Movie}</div>
-              <div className="col-1">{item.Year}</div>
-              <div className="col-3">
-                <input
-                  type="button"
-                  value="delete"
-                  onClick={() => deleteMovie(index)}
-                  className="btn btn-primary"
-                ></input>
-              </div>
-            </div>
+            {item.Username},{item.Password}
           </div>
         ))}
       </div>
